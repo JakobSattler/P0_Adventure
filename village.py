@@ -4,7 +4,6 @@ import inventory
 from shops import merchant, druid, blacksmith
 from dungeon import dungeon
 
-
 keymap = {
     "ACTION_VILLAGE_INVENTORY": "1",
     "ACTION_VILLAGE_MERCHANT": "2",
@@ -15,8 +14,10 @@ keymap = {
     "ACTION_VILLAGE_QUIT": "0"
 }
 
+
 def show():
     execute_village_action(input(text_messages.MESSAGE_WELCOME_VILLAGE))
+
 
 # https://stackoverflow.com/questions/60208/replacements-for-switch-statement-in-python
 # TODO: implement kind of switch
@@ -35,6 +36,8 @@ def execute_village_action(action):
         dungeon.init(False)
     elif action == keymap.get("ACTION_VILLAGE_SAVE"):
         game.save_game()
+        print("Game saved to " + game.savefile)
+        show()
     else:
         print(text_messages.MESSAGE_INVALID_CHOICE)
         show()

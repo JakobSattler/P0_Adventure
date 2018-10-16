@@ -35,7 +35,7 @@ class CustomEncoder(json.JSONEncoder):
 # https://stackoverflow.com/questions/40416072/reading-file-using-relative-path-in-python-project/40416154
 def load_file(savefile):
     with open(savefile, "r") as f:
-        return json.load(f)
+        return json.load(f, cls=CustomDecoder)
 
 def save_file(gamedata, savefile):
     with open(savefile, "w") as f:

@@ -1,6 +1,6 @@
 import game
 import text_messages
-
+import inventory
 
 
 def sell(item_name):
@@ -23,5 +23,5 @@ def buy(item_name, shop_inventory):
         print(text_messages.MESSAGE_NOT_ENOUGH_GOLD)
     else:
         game.player.gold -= item.price
-        game.player.inventory.append(item)
+        inventory.add_item(item)
         print(text_messages.get_message_item_bought(item, game.player))

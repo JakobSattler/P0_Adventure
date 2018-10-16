@@ -37,6 +37,8 @@ monsters = []
 
 savefile = None
 
+bonus_tasks = False
+
 
 def start(args):
     global savefile
@@ -44,13 +46,20 @@ def start(args):
 
     if args.print_bonus:
         print_bonus_tasks()
-        return
-    elif args.new_game:
+        quit()
+
+    if args.new_game:
         create_char()
-    elif args.bonus_tasks:
+    else:
+        load_game()
+    if args.bonus_tasks:
+        bonus_tasks = True
         print()
         # TODO: implement bonus tasks
-    
+
+    init()
+    village.show()
+
 
 def create_char():
     char_name = input(MESSAGE_WELCOME_CREATE)
@@ -79,8 +88,6 @@ def create_char():
         player.defense = char_defense
         player.speed = char_speed
 
-        init()
-        village.show()
 
 
 # looked up how to get relative path in python
@@ -92,14 +99,8 @@ def init():
 
 def init_items():
     filename = os.path.join(os.path.dirname(__file__), "res/items.json")
-    items_loaded = (json_serialization.load_file(filename)["items"])
 
-    # Save dict of item to dict property of object
-    # TODO: better to directly set variables when creating item by using
-    # values from json-dict?
-    for item_json in items_loaded:
-        item = Item(**item_json)
-        # item.__dict__ = item_json
+    for item in json_serialization.load_file(filename):
         item.name = item.name.lower()
         items.append(item)
         if item.passive_effect:
@@ -135,7 +136,8 @@ def confirm_stats(confirm_text):
 
 def read_stat(stat_text):
     stat = int(input(stat_text))
-    if stat < 0:
+
+    if stat <= 0:
         print(MESSAGE_NEGATIVE_ASSIGNED)
         return read_stat(stat_text)
     return stat
@@ -177,5 +179,22 @@ def print_bonus_tasks():
 
 
 def save_game():
-    gamedata = GameData(**{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": False, "savefile": savefile})
+    gamedata = GameData(
+        **{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": False, "savefile": savefile})
     json_serialization.save_file(gamedata, savefile)
+
+
+def load_game():
+    global savefile
+    global player
+    global bonus_tasks
+
+    gamedata = json_serialization.load_file(savefile)
+    player = gamedata.player
+    dungeon.cur_room = gamedata.dungeon_room
+    bonus_tasks = gamedata.bonus_tasks
+
+    savefile = gamedata.savefile
+
+    init()
+    village.show()

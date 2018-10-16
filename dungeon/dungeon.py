@@ -27,7 +27,8 @@ def init(p_random=False):
     if not random:
         set_default_rooms()
         global cur_room
-        cur_room = default_rooms[0]
+        if not cur_room:
+            cur_room = default_rooms[0]
     else:
         # do stuff
         print("randon dungeon not implemented yet")
@@ -50,6 +51,8 @@ def show():
     elif action == ACTION_MOVE:
         move()
     elif action == ACTION_RUN_AWAY:
+        global cur_room
+        cur_room = None
         game.enter_village()
 
 
@@ -60,11 +63,12 @@ def move():
         show()
     if not random:
         if cur_room == default_rooms[0]:
-            cur_room = default_rooms[1]
+            index = 1
         else:
-            cur_room = default_rooms[0]
+            index = 0
+        set_default_rooms()
+        cur_room = default_rooms[index]
 
-    print_description()
     show()
 
 
@@ -73,17 +77,23 @@ def print_description():
 
 
 def set_default_rooms():
-    default_rooms.append(
-        Room([copy.deepcopy(game.find_monster_by_name("rat")), copy.deepcopy(game.find_monster_by_name("gnoll"))], None))
-    default_rooms.append(
-        Room([copy.deepcopy(game.find_monster_by_name("wolf")), copy.deepcopy(game.find_monster_by_name("rat"))], [game.find_item_by_name("potion")]))
+    room_1_monsters = [copy.deepcopy(game.find_monster_by_name("rat")),
+                       copy.deepcopy(game.find_monster_by_name("gnoll"))]
+    room_1_rewards = None
+    room_2_monsters = [copy.deepcopy(game.find_monster_by_name("wolf")),
+                       copy.deepcopy(game.find_monster_by_name("rat"))]
+    room_2_rewards = [game.find_item_by_name("potion")]
+    room_1 = {"monsters": room_1_monsters, "rewards": room_1_rewards}
+    room_2 = {"monsters": room_2_monsters, "rewards": room_2_rewards}
+    global default_rooms
+    default_rooms = [Room(**room_1), Room(**room_2)]
 
 
 # TODO: REFACTOR TO LESS CODE!!!!!
 def attack():
     if not cur_room.monsters:
         print(text_messages.MESSAGE_DUNGEON_ROOM_EMPTY)
-        return
+        return show()
 
     while cur_room.monsters:
         while True:
@@ -105,8 +115,9 @@ def attack():
             if not isinstance(attacker, type(game.player)):
                 defender = game.player
                 # TODO: function to get damage
-                print(text_messages.get_message_defending(
-                    attacker, str(deal_damage(attacker, defender))))
+                if attacker.health > 0:
+                    print(text_messages.get_message_defending(
+                        attacker, str(deal_damage(attacker, defender))))
                 if defender.health <= 0:
                     print(text_messages.get_message_dungeon_player_died(attacker))
                     reset_player()
@@ -127,8 +138,10 @@ def attack():
 
 
 def reset_player():
-    game.player.inventory.clear()
+    inventory.clear()
     game.player.health = 100
+    global cur_room
+    cur_room = None
 
 
 def deal_damage(attacker, defender):
@@ -144,10 +157,10 @@ def open_chest():
         return show()
 
     if cur_room.rewards:
-        print(text_messages.MESSAGE_DUNGEON_CHEST_EMPTY)
+        print(text_messages.MESSAGE_DUNGEON_CHEST_REWARD)
         game.player.inventory = game.player.inventory + cur_room.rewards
     else:
-        print(text_messages.MESSAGE_DUNGEON_CHEST_REWARD)
+        print(text_messages.MESSAGE_DUNGEON_CHEST_EMPTY)
     show()
 
 

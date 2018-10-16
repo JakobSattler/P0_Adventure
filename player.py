@@ -20,3 +20,7 @@ class Player:
         print("  * Defense: {}".format(self.defense))
         print("  * Speed: {}".format(self.speed))
         print()
+
+    def update_stat(self, influenced_stat, amount):
+        stat = getattr(self, influenced_stat)
+        setattr(self, influenced_stat, stat + amount)

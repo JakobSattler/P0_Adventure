@@ -190,10 +190,10 @@ MESSAGE_DUNGEON_DEFENDING = "{monster_name} attacked you and dealt {damage} dama
 MESSAGE_DUNGEON_ATTACKING = "You attacked {monster_name} and dealt {damage} damage."
 MESSAGE_DUNGEON_PLAYER_DIED = "You were killed by {monster_name}."
 MESSAGE_DUNGEON_MONSTER_DIED = "{monster_name} died. It dropped {gold_earned} gold."
-MESSAGE_DUNGEON_ENEMIES_DEFEATED = "All enemies are defeated.\n" + MESSAGE_DUNGEON_ROOM_EMPTY
+MESSAGE_DUNGEON_ENEMIES_DEFEATED = "All enemies defeated.\n" + MESSAGE_DUNGEON_ROOM_EMPTY
 MESSAGE_DUNGEON_MONSTERS_BLOCKING = "Monsters are blocking your way."
 
-MESSAGE_DUNGEON_CHEST_EMPTY = "This chest is empty."
+MESSAGE_DUNGEON_CHEST_EMPTY = "The chest is empty."
 MESSAGE_DUNGEON_CHEST_REWARD = "You collected {item_name} from the chest."
 
 

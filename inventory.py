@@ -24,7 +24,6 @@ def show(p_src_module_name):
 
 def execute_inventory_action(inventory_action):
     if inventory_action == ACTION_INVENTORY_QUIT:
-        print(text_messages.MESSAGE_NOTHING_DONE)
         return close_inventory()
         # village.show()
     else:
@@ -37,10 +36,9 @@ def close_inventory():
 
 def handle_item(item_name):
     # TODO: what to do, when item existing, but not in inventory?
-    item = game.find_item_by_name(item_name)
     if item_name not in [item.name for item in game.items]:
         print(text_messages.MESSAGE_ITEM_NOT_EXISTING)
-        show()
+        show(src_module_name)
     else:
         for i in game.items:
             if i.name == item_name:
@@ -60,7 +58,7 @@ def execute_item_action(item_action, item):
 
 
 def drop_item(item):
-    game.player.inventory.remove(game.find_item_by_name(item.name))
+    remove_item(item)
     print(text_messages.get_message_item_dropped(item))
 
 
@@ -68,8 +66,18 @@ def use_item(item):
     if item.passive_effect:
         print(text_messages.MESSAGE_ITEM_NOT_USABLE)
     else:
-        stat = getattr(game.player, item.influenced_stat)
-        setattr(game.player, item.influenced_stat, stat + item.amount)
-        game.player.inventory.remove(item)
+        game.player.update_stat(item.influenced_stat, item.amount)
+        remove_item(item)
         print(text_messages.get_message_item_used(item, game.player))
     close_inventory()
+
+def add_item(item):
+    if item.passive_effect:
+        game.player.update_stat(item.influenced_stat, item.amount)
+    game.player.inventory.append(item)
+
+def remove_item(item):
+    print("removing item " + item.name)
+    if item.passive_effect:
+        game.player.update_stat(item.influenced_stat, item.amount * -1)
+    game.player.inventory.remove(item)
