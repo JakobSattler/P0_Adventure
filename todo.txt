@@ -1,0 +1,14 @@
+REMOVE todo.txt?
+
+GIT!!!!
+
+Redesign: interface "gamestate"(?) with show function for easier return when exiting menu (e.g. inventory)
+
+Check todos in code
+
+When resetting player --> reset to base stats
+
+on inventory change --> update stats of player (passive effects)
+
+refactor!!!! --> especially text_messages (how to store text most effectively?)
+

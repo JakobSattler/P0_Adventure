@@ -1,0 +1,17 @@
+{
+  "player": null,
+  "dungeon_room": null,
+  "savefile": "game.json",
+  "bonus_tasks": false,
+  "player: ": {
+    "name": "1",
+    "health": 100,
+    "attack": 1,
+    "defense": 1,
+    "speed": 1,
+    "gold": 100,
+    "inventory": [],
+    "__class__": "Player"
+  },
+  "__class__": "GameData"
+}

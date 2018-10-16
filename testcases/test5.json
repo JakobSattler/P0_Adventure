@@ -1,0 +1,41 @@
+{
+  "player": {
+    "name": "Player1",
+    "health": 100,
+    "attack": 1,
+    "defense": 1,
+    "speed": 1,
+    "gold": 100,
+    "inventory": [],
+    "__class__": "Player"
+  },
+  "dungeon_room": {
+    "monsters": [
+      {
+        "name": "rat",
+        "health": 30,
+        "attack": 10,
+        "defense": 15,
+        "speed": 50,
+        "reward_min": 1,
+        "reward_max": 5,
+        "__class__": "Monster"
+      },
+      {
+        "name": "gnoll",
+        "health": 60,
+        "attack": 30,
+        "defense": 40,
+        "speed": 20,
+        "reward_min": 5,
+        "reward_max": 10,
+        "__class__": "Monster"
+      }
+    ],
+    "rewards": null,
+    "__class__": "Room"
+  },
+  "savefile": "test5.json",
+  "bonus_tasks": false,
+  "__class__": "GameData"
+}
