@@ -138,6 +138,7 @@ def attack():
 
 
 def reset_player():
+    game.player.old_inventory = copy.deepcopy(game.player.inventory)
     inventory.clear_inventory()
     game.player.health = 100
     global cur_room

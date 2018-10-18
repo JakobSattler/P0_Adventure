@@ -3,6 +3,8 @@
 # TODO: Save player in module for easier access
 
 
+def init():
+    MESSAGE_WELCOME_VILLAGE
 # character creation
 MESSAGE_WELCOME_CREATE = "Welcome to P0 Dungeon Quest character creator!\n" \
                          "Enter your name: "
@@ -14,7 +16,7 @@ MESSAGE_ASSIGN_DEFENSE = "Defense: "
 MESSAGE_ASSIGN_SPEED = "Speed: "
 MESSAGE_NEGATIVE_ASSIGNED = "Please input a positive integer."
 MESSAGE_TOO_MANY_POINTS = "Sorry, it seems like you spent more than 100 ability points on your character... " \
-                          "Try that again!"
+                          "Try that again!\n"
 
 MESSAGE_CONFIRM_STATS = "Name: {char_name}\n" \
                         "Attributes:\n\n" \
@@ -53,14 +55,14 @@ MESSAGE_WELCOME_INVENTORY = "Welcome to your inventory {char_name}!\n" \
                             "> "
 MESSAGE_USE_OR_DROP = "Do you want to 'use' or 'drop' {item_name}? Else 'quit'.\n" \
                       "> "
-MESSAGE_NOTHING_DONE = "Nothing done."
-MESSAGE_ITEM_NOT_EXISTING = "Item does not exist."  #
+MESSAGE_NOTHING_DONE = "Nothing done.\n"
+MESSAGE_ITEM_NOT_EXISTING = "Item does not exist."
 MESSAGE_ITEM_USED = "You used {item_name}.\n" \
                     "It increased your {influenced_attribute} by {amount}.\n" \
                     "You now have {new_stat_amount} {influenced_attribute}."
-MESSAGE_ITEM_DROPPED = "You dropped {item_name}."
+MESSAGE_ITEM_DROPPED = "You dropped {item_name}.\n"
 
-MESSAGE_ITEM_NOT_USABLE = "You cannot use this item."
+MESSAGE_ITEM_NOT_USABLE = "You cannot use this item.\n"
 
 
 def get_message_inventory_welcome(items, player):
@@ -94,16 +96,16 @@ MESSAGE_WELCOME_MERCHANT = "Welcome to the merchant!\n" \
                            "{items}\n" \
                            "Type 'quit' or the name of the item you want to sell.\n" \
                            "> "
-MESSAGE_ITEM_NOT_OWNED = "You do not possess a {item_name}."
+MESSAGE_ITEM_NOT_OWNED = "You do not possess a {item_name}.\n"
 MESSAGE_ITEM_SOLD = "You have chosen {item_name}.\n" \
                     "You now have {amount_of_gold} gold left.\n" \
-                    "Removed item from inventory."
+                    "Removed item from inventory.\n"
 MESSAGE_NOTHING_TO_SELL = "Sorry, you have nothing to sell.\n" \
-                          "Thanks for visiting!"
+                          "Thanks for visiting!\n"
 MESSAGE_ITEM_BOUGHT = "You have chosen {item}.\n" \
-                      "You have {amount_of_gold} gold left."
-MESSAGE_ITEM_NOT_SELLING = "I do not sell '{item_name}'."
-MESSAGE_NOT_ENOUGH_GOLD = "Not enough gold."
+                      "You have {amount_of_gold} gold left.\n"
+MESSAGE_ITEM_NOT_SELLING = "I do not sell '{item_name}'.\n"
+MESSAGE_NOT_ENOUGH_GOLD = "Not enough gold.\n"
 
 
 def get_message_welcome_merchant(player):
@@ -118,10 +120,13 @@ def get_message_item_not_owned(item_name):
 
 
 def get_message_item_sold(item, player):
-    return MESSAGE_ITEM_SOLD.replace("{item_name}", item.name.capitalize()).replace("{amount_of_gold}", str(player.gold))
+    return MESSAGE_ITEM_SOLD.replace("{item_name}", item.name.capitalize()).replace("{amount_of_gold}",
+                                                                                    str(player.gold))
+
 
 def get_message_item_bought(item, player):
     return MESSAGE_ITEM_BOUGHT.replace("{item}", item.name.capitalize()).replace("{amount_of_gold}", str(player.gold))
+
 
 def get_message_item_not_selling(item_name):
     return MESSAGE_ITEM_NOT_SELLING.replace("{item_name}", item_name)
@@ -133,6 +138,7 @@ MESSAGE_WELCOME_BLACKSMITH = "Welcome to the blacksmith\n" \
                              "Type 'quit' or the name of the item you want to buy.\n" \
                              "> "
 
+
 # def get_message_welcome_shop(shop_inventory, player):
 #     item_text = ""
 #     for item in shop_inventory
@@ -141,36 +147,29 @@ MESSAGE_WELCOME_BLACKSMITH = "Welcome to the blacksmith\n" \
 def get_message_welcome_blacksmith(shop_inventory, player):
     item_text = ""
     for item in shop_inventory:
-            item_text += "  * {:20} for {:4d} gold ({:+d} {} when held)\n".format(item.name.capitalize(),
-                                                                                  item.price, item.amount,
-                                                                                  item.influenced_stat)
+        item_text += "  * {:20} for {:4d} gold ({:+d} {} when held)\n".format(item.name.capitalize(),
+                                                                              item.price, item.amount,
+                                                                              item.influenced_stat)
     return MESSAGE_WELCOME_BLACKSMITH.replace("{amount_of_gold}", str(player.gold)).replace("{items}", item_text)
 
+
 MESSAGE_WELCOME_DRUID = "Welcome to the druid\n" \
-                             "You have {amount_of_gold} gold to spend. This is what I'm selling:\n\n" \
-                             "{items}\n" \
-                             "Type 'quit' or the name of the item you want to buy.\n" \
-                             "> "
+                        "You have {amount_of_gold} gold to spend. This is what I'm selling:\n\n" \
+                        "{items}\n" \
+                        "Type 'quit' or the name of the item you want to buy.\n" \
+                        "> "
+
 
 def get_message_welcome_druid(shop_inventory, player):
     item_text = ""
     for item in shop_inventory:
-            item_text += "  * {:20} for {:4d} gold ({:+d} {} when used)\n".format(item.name.capitalize(),
-                                                                                  item.price, item.amount,
-                                                                                  item.influenced_stat)
+        item_text += "  * {:20} for {:4d} gold ({:+d} {} when used)\n".format(item.name.capitalize(),
+                                                                              item.price, item.amount,
+                                                                              item.influenced_stat)
     return MESSAGE_WELCOME_DRUID.replace("{amount_of_gold}", str(player.gold)).replace("{items}", item_text)
 
-#
-# def get_message_item_list(style, player):
-#     item_text = ""
-#     for item in player.inventory:
-#         item_text += "  * {:20} ".format(item.name.capitalize())
-#         item_effect = "({:+d} {} when {})".format(item.amount, item.influenced_stat,
-#                                                   "held" if item.passive_effect else "used")
-#         if style == ITEM_LIST_INVENTORY:
 
-
-#dungeon
+# dungeon
 MESSAGE_DUNGEON_DESC = "You see {description}."
 MESSAGE_DUNGEON_MENU = "What do you want to do?\n\n" \
                        "  1) Inventory\n" \
@@ -182,10 +181,10 @@ MESSAGE_DUNGEON_MENU = "What do you want to do?\n\n" \
                        "> "
 MESSAGE_DUNGEON_ROOM_EMPTY = "You are alone in this room."
 MESSAGE_DUNGEON_FIGHT = "You see the following enemies:\n\n" \
-                         "{monsters}\n\n" \
-                         "You have {health} health.\n" \
-                         "Which enemy would you like to attack?\n" \
-                         "> "
+                        "{monsters}\n\n" \
+                        "You have {health} health.\n" \
+                        "Which enemy would you like to attack?\n" \
+                        "> "
 MESSAGE_DUNGEON_DEFENDING = "{monster_name} attacked you and dealt {damage} damage."
 MESSAGE_DUNGEON_ATTACKING = "You attacked {monster_name} and dealt {damage} damage."
 MESSAGE_DUNGEON_PLAYER_DIED = "You were killed by {monster_name}."
@@ -200,8 +199,8 @@ MESSAGE_DUNGEON_CHEST_REWARD = "You collected {item_name} from the chest."
 def get_message_dungeon_desc(monsters):
     description = ""
     for i in range(0, len(monsters)):
-        if i < len(monsters)-1:
-            if i < len(monsters)-2:
+        if i < len(monsters) - 1:
+            if i < len(monsters) - 2:
                 description += "a " + monsters[i].name + ", "
             else:
                 description += "a " + monsters[i].name + " "
@@ -210,26 +209,33 @@ def get_message_dungeon_desc(monsters):
     description += "eyeballing you"
     return MESSAGE_DUNGEON_DESC.replace("{description}", description)
 
+
 def get_message_dungeon_fight(monsters, player):
     monster_text = ""
     for i in range(0, len(monsters)):
-        monster_text += " {}) {:15} ({} HP)\n".format(i+1, monsters[i].name.title(), monsters[i].health)
+        monster_text += " {}) {:15} ({} HP)\n".format(i + 1, monsters[i].name.title(), monsters[i].health)
     return MESSAGE_DUNGEON_FIGHT.replace("{monsters}", monster_text).replace("{health}", str(player.health))
+
 
 def get_message_defending(monster, damage):
     return MESSAGE_DUNGEON_DEFENDING.replace("{monster_name}", monster.name.title()).replace("{damage}", damage)
 
+
 def get_message_attacking(monster, damage):
     return MESSAGE_DUNGEON_ATTACKING.replace("{monster_name}", monster.name.title()).replace("{damage}", damage)
+
 
 def get_message_dungeon_player_died(monster):
     return MESSAGE_DUNGEON_PLAYER_DIED.replace("{monster_name}", monster.name.title())
 
+
 def get_message_dungeon_monster_died(monster, reward):
     return MESSAGE_DUNGEON_MONSTER_DIED.replace("{monster_name}", monster.name.title()).replace("{gold_earned}", reward)
 
+
 def get_message_dungeon_chest_reward(item_name):
     return MESSAGE_DUNGEON_CHEST_REWARD.replace("{item_name}", item_name)
+
 
 # item list styles
 ITEM_LIST_INVENTORY = "inventory"

@@ -10,6 +10,7 @@ class Player:
         self.speed = 0
         self.gold = 100
         self.inventory = []
+        self.old_inventory = []
         self.__dict__.update(player)
 
     def print_stats(self):

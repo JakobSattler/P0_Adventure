@@ -13,7 +13,6 @@ import village
 from dungeon.monster import Monster
 from gamedata import GameData
 import dungeon.dungeon as dungeon
-
 keymap = {
     "ACTION_VILLAGE_INVENTORY": "1",
     "ACTION_VILLAGE_MERCHANT": "2",

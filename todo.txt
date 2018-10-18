@@ -5,6 +5,9 @@ GIT!!!!
 Redesign: interface "gamestate"(?) with show function for easier return when exiting menu (e.g. inventory)
 
 Check todos in code
+Error messages (Assignment)
+add more monsters and items
+implement random dungeon if bonus tasks running
 
 When resetting player --> reset to base stats
 

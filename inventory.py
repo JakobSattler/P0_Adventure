@@ -25,7 +25,6 @@ def show(p_src_module_name):
 def execute_inventory_action(inventory_action):
     if inventory_action == ACTION_INVENTORY_QUIT:
         return close_inventory()
-        # village.show()
     else:
         handle_item(inventory_action.lower())
 
