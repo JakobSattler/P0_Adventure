@@ -1,18 +1,17 @@
 # TODO: implement function to find item by name
 
-import pdb
-
 import os
-from shops import blacksmith, druid
 
-from text_messages import *
-from player import Player
-from item import Item
+import dungeon.dungeon as dungeon
 import json_serialization
 import village
 from dungeon.monster import Monster
 from gamedata import GameData
-import dungeon.dungeon as dungeon
+from item import Item
+from player import Player
+from shops import blacksmith, druid
+from text_messages import *
+
 keymap = {
     "ACTION_VILLAGE_INVENTORY": "1",
     "ACTION_VILLAGE_MERCHANT": "2",
@@ -37,6 +36,7 @@ monsters = []
 savefile = None
 
 bonus_tasks = False
+impl_bonus_tasks = ["5", "6", "7"]
 
 
 def start(args):
@@ -47,14 +47,15 @@ def start(args):
         print_bonus_tasks()
         quit()
 
+    if args.bonus_tasks:
+        global bonus_tasks
+        bonus_tasks = True
+        # TODO: implement bonus tasks
+
     if args.new_game:
         create_char()
     else:
         load_game()
-    if args.bonus_tasks:
-        bonus_tasks = True
-        print()
-        # TODO: implement bonus tasks
 
     init()
     village.show()
@@ -88,12 +89,12 @@ def create_char():
         player.speed = char_speed
 
 
-
 # looked up how to get relative path in python
 # https://stackoverflow.com/questions/918154/relative-paths-in-python
 def init():
     init_items()
     init_monsters()
+    village.init()
 
 
 def init_items():
@@ -173,8 +174,7 @@ def find_monster_by_name(name):
 
 def print_bonus_tasks():
     # TODO: insert the tasks you implemented
-    bonus_tasks = []
-    print(",".join(str(x) for x in bonus_tasks))
+    print(",".join(str(x) for x in impl_bonus_tasks))
 
 
 def save_game():
@@ -197,3 +197,7 @@ def load_game():
 
     init()
     village.show()
+
+
+# variable to not remove item import when organizing imports
+__all__ = ["Item"]

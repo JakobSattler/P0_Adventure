@@ -3,9 +3,6 @@
 # TODO: Save player in module for easier access
 
 
-def init():
-    MESSAGE_WELCOME_VILLAGE
-# character creation
 MESSAGE_WELCOME_CREATE = "Welcome to P0 Dungeon Quest character creator!\n" \
                          "Enter your name: "
 
@@ -33,16 +30,10 @@ def get_confirm_stats_message(char_name, char_attack, char_defense, char_speed):
         .replace("{char_defense}", char_defense).replace("{char_speed}", char_speed)
 
 
-# village
+# vil
 MESSAGE_WELCOME_VILLAGE = "Welcome to Prog0 Village!\n" \
                           "What do you want to do?\n" \
-                          "  1) Inventory\n" \
-                          "  2) Merchant\n" \
-                          "  3) Blacksmith\n" \
-                          "  4) Druid\n" \
-                          "  5) Dungeon\n" \
-                          "  6) Save game\n" \
-                          "  0) Quit game\n\n" \
+                          "{options}" \
                           "> "
 MESSAGE_INVALID_CHOICE = "Invalid choice. Try again."
 
@@ -64,14 +55,40 @@ MESSAGE_ITEM_DROPPED = "You dropped {item_name}.\n"
 
 MESSAGE_ITEM_NOT_USABLE = "You cannot use this item.\n"
 
+MESSAGE_WELCOME_TREASURE_CHEST = "Welcome to your treasure chest {char_name}!\n" \
+                                 "You can leave your items here while fighting yourself " \
+                                 "through the dungeon so you won't " \
+                                 "loose your items!\n" \
+                                 "These are the items currently placed in the chest:\n\n" \
+                                 "{items}\n" \
+                                 "Do you want to 'leave' or 'take' an item? Else 'quit'.\n" \
+                                 "> "
+
+
+def get_message_welcome_village(options):
+    options_text = ""
+    for option in options:
+        key = options.index(option) + 1 if not option == "quit game" else 0
+        options_text += "  {}) {}\n".format(key, option.capitalize())
+    options_text += "\n"
+    return MESSAGE_WELCOME_VILLAGE.replace("{options}", options_text)
+
+
+def get_message_treasure_chest(chest, player):
+    return MESSAGE_WELCOME_TREASURE_CHEST.replace("{char_name}", player.name).replace("{items}", get_inventory_list(chest))
+
 
 def get_message_inventory_welcome(items, player):
+    return MESSAGE_WELCOME_INVENTORY.replace("{items}", get_inventory_list(items)).replace("{char_name}", player.name)
+
+
+def get_inventory_list(items):
     item_text = ""
     for item in items:
         item_desc = "({:+d} {} when {})".format(item.amount, item.influenced_stat,
                                                 "held" if item.passive_effect else "used")
         item_text += "  * {:20} {}\n".format(item.name.capitalize(), item_desc)
-    return MESSAGE_WELCOME_INVENTORY.replace("{items}", item_text).replace("{char_name}", player.name)
+    return item_text
 
 
 def get_message_item_used(item, player):

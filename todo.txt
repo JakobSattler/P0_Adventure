@@ -14,5 +14,5 @@ When resetting player --> reset to base stats
 on inventory change --> update stats of player (passive effects) 
 	-->	not working when removing, as every object in inventory is the same, so more than one item gets removed. Better use indices or copies of objects.
 		But can't really use indices, as user just inputs name of object. better just find the first appearance of the item?
-refactor!!!! --> especially text_messages (how to store text most effectively?)
+refactor!!!! --> especially text_messages (how to store text most effectively?, item list)
 

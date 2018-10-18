@@ -62,5 +62,12 @@
     "amount": 6,
     "passive_effect": false,
     "__class__": "Item"
+  },
+  {
+    "name": "magic scroll",
+    "price": 30,
+    "influenced_stat": "",
+    "passive_effect": false,
+    "__class__": "Item"
   }
 ]

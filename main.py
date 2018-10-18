@@ -9,7 +9,7 @@ import dungeon.dungeon
 # from gamedata import GameData
 # from json_serialization import save_gamedata, load_gamedata
 # from character_create import input_player
-# from village import village_menu
+# from vil import village_menu
 
 
 def main():
