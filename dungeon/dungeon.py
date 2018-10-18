@@ -138,7 +138,7 @@ def attack():
 
 
 def reset_player():
-    inventory.clear()
+    inventory.clear_inventory()
     game.player.health = 100
     global cur_room
     cur_room = None

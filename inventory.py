@@ -71,13 +71,19 @@ def use_item(item):
         print(text_messages.get_message_item_used(item, game.player))
     close_inventory()
 
+
 def add_item(item):
     if item.passive_effect:
         game.player.update_stat(item.influenced_stat, item.amount)
     game.player.inventory.append(item)
 
+
 def remove_item(item):
-    print("removing item " + item.name)
     if item.passive_effect:
         game.player.update_stat(item.influenced_stat, item.amount * -1)
     game.player.inventory.remove(item)
+
+
+def clear_inventory():
+    for i in range(len(game.player.inventory) - 1, -1, -1):
+        remove_item(game.player.inventory[i])
