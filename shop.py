@@ -18,7 +18,7 @@ class Shop:
         else:
             game.player.gold += int(item.price * 0.5)
             inventory.remove_item(item)
-            print(text.get_message_item_sold(item, game.player))
+            print(text.get_message_item_sold(item))
 
     def buy(self, item_name):
         item = game.find_item_by_name(item_name.lower(), self.inventory)
@@ -33,14 +33,14 @@ class Shop:
             inventory.add_item(item)
             if self.name == "grave digger":
                 self.inventory.remove(item)
-            print(text.get_message_item_bought(item, game.player))
+            print(text.get_message_item_bought(item))
 
     def show(self):
         if self.buyer and not self.inventory:
             print(text.MESSAGE_NOTHING_TO_SELL)
             self.close()
         else:
-            action = input(text.get_message_shop_welcome(self, game.player))
+            action = input(text.get_message_shop_welcome(self))
             self.execute_action(action)
 
     @staticmethod

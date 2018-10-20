@@ -8,7 +8,7 @@ items = []
 
 def show():
     action = input(
-        text.get_message_treasure_chest(items, game.player).replace("inventory", "treasure chest"))
+        text.get_message_treasure_chest(items).replace("inventory", "treasure chest"))
     if action == "leave":
         leave_item()
     elif action == "take":

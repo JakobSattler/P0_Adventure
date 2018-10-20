@@ -18,7 +18,7 @@ def show(p_src_module_name):
         # TODO: add return before call to save memory/keep from overflow?
         return close_inventory()
 
-    inventory_action = input(text.get_message_inventory_welcome(game.player.inventory, game.player))
+    inventory_action = input(text.get_message_inventory_welcome(game.player.inventory))
     execute_inventory_action(inventory_action)
 
 
@@ -67,13 +67,14 @@ def use_item(item):
             "You have used the magic scroll!\n"
             "It opened a portal you can use to get from the dungeon to the village and back for one time!")
         game.dungeon.open_portal()
+        remove_item(item)
     else:
         if item.passive_effect:
             print(text.MESSAGE_ITEM_NOT_USABLE)
         else:
             game.player.update_stat(item.influenced_stat, item.amount)
             remove_item(item)
-            print(text.get_message_item_used(item, game.player))
+            print(text.get_message_item_used(item))
     close_inventory()
 
 

@@ -1,8 +1,26 @@
-# TODO: Create constants for variable-identifiers
+import game
 
-# TODO: Save player in module for easier access
+OPTION_INVENTORY = "Inventory"
+OPTION_MERCHANT = "Merchant"
+OPTION_BLACKSMITH = "blacksmith"
+OPTION_DRUID = "Druid"
+OPTION_DUNGEON = "Dungeon"
+OPTION_TREASURE_CHEST = "Treasure chest"
+OPTION_GRAVE_DIGGER = "Grave digger"
+OPTION_PORT_TO_DUNGEON = "Use portal to dungeon"
+OPTION_SAVE = "Save game"
+OPTION_QUIT_GAME = "Quit game"
 
-VILLAGE_OPTIONS = ["inventory", "merchant", "blacksmith", "druid", "dungeon", "save game", "quit game"]
+OPTION_LOOK_AROUND = "Look Around"
+OPTION_ATTACK = "Attack"
+OPTION_OPEN_CHEST = "Open chest"
+OPTION_MOVE = "Move"
+OPTION_PORT_TO_VILLAGE = "Use portal to village"
+OPTION_RUN = "Run away (leave dungeon)"
+
+
+VILLAGE_OPTIONS = [OPTION_INVENTORY, OPTION_MERCHANT, OPTION_BLACKSMITH, OPTION_DRUID, OPTION_DUNGEON, OPTION_SAVE, OPTION_QUIT_GAME]
+DUNGEON_OPTIONS = [OPTION_INVENTORY, OPTION_LOOK_AROUND, OPTION_ATTACK, OPTION_OPEN_CHEST, OPTION_MOVE, OPTION_RUN]
 
 ERROR_NOT_INTEGER = "Error: please input an integer"
 
@@ -71,19 +89,20 @@ MESSAGE_WELCOME_TREASURE_CHEST = "Welcome to your treasure chest {char_name}!\n"
 def get_message_welcome_village(options):
     options_text = ""
     for option in options:
-        key = options.index(option) + 1 if not option == "quit game" else 0
+        key = options.index(option) + 1 if not option == OPTION_QUIT_GAME else 0
         options_text += "  {}) {}\n".format(key, option.capitalize())
     options_text += "\n"
     return MESSAGE_WELCOME_VILLAGE.replace("{options}", options_text)
 
 
-def get_message_treasure_chest(chest, player):
-    return MESSAGE_WELCOME_TREASURE_CHEST.replace("{char_name}", player.name).replace("{items}",
-                                                                                      get_inventory_list(chest))
+def get_message_treasure_chest(chest):
+    return MESSAGE_WELCOME_TREASURE_CHEST.replace("{char_name}", game.player.name).replace("{items}",
+                                                                                           get_inventory_list(chest))
 
 
-def get_message_inventory_welcome(items, player):
-    return MESSAGE_WELCOME_INVENTORY.replace("{items}", get_inventory_list(items)).replace("{char_name}", player.name)
+def get_message_inventory_welcome(items):
+    return MESSAGE_WELCOME_INVENTORY.replace("{items}", get_inventory_list(items)).replace("{char_name}",
+                                                                                           game.player.name)
 
 
 def get_inventory_list(items):
@@ -95,10 +114,10 @@ def get_inventory_list(items):
     return item_text
 
 
-def get_message_item_used(item, player):
+def get_message_item_used(item):
     # TODO: Exception for stat not existing
     if item.influenced_stat:
-        new_stat = str(getattr(player, str(item.influenced_stat).lower()))
+        new_stat = str(getattr(game.player, str(item.influenced_stat).lower()))
         return MESSAGE_ITEM_USED.replace("{item_name}", item.name.capitalize()) \
             .replace("{influenced_attribute}", item.influenced_stat) \
             .replace("{new_stat_amount}", new_stat) \
@@ -135,13 +154,14 @@ def get_message_item_not_owned(item_name):
     return MESSAGE_ITEM_NOT_OWNED.replace("{item_name}", item_name.title())
 
 
-def get_message_item_sold(item, player):
+def get_message_item_sold(item):
     return MESSAGE_ITEM_SOLD.replace("{item_name}", item.name.capitalize()).replace("{amount_of_gold}",
-                                                                                    str(player.gold))
+                                                                                    str(game.player.gold))
 
 
-def get_message_item_bought(item, player):
-    return MESSAGE_ITEM_BOUGHT.replace("{item}", item.name.capitalize()).replace("{amount_of_gold}", str(player.gold))
+def get_message_item_bought(item):
+    return MESSAGE_ITEM_BOUGHT.replace("{item}", item.name.capitalize()).replace("{amount_of_gold}",
+                                                                                 str(game.player.gold))
 
 
 def get_message_item_not_selling(item_name):
@@ -167,7 +187,7 @@ MESSAGE_WELCOME_SHOP_SELL = "Welcome to the {shop_name}!\n" \
                             "> "
 
 
-def get_message_shop_welcome(shop, player):
+def get_message_shop_welcome(shop):
     item_text = ""
     for item in shop.inventory:
         price = item.price if not shop.buyer else int(item.price * 0.5)
@@ -176,12 +196,12 @@ def get_message_shop_welcome(shop, player):
         item_text += "  * {:20} for {:4d} gold {}\n".format(item.name.capitalize(),
                                                             price, item_desc)
     if not shop.buyer:
-        return MESSAGE_WELCOME_SHOP_BUY.replace("{amount_of_gold}", str(player.gold)).replace("{items}",
-                                                                                              item_text).replace(
+        return MESSAGE_WELCOME_SHOP_BUY.replace("{amount_of_gold}", str(game.player.gold)).replace("{items}",
+                                                                                                   item_text).replace(
             "{shop_name}", shop.name)
     else:
-        return MESSAGE_WELCOME_SHOP_SELL.replace("{amount_of_gold}", str(player.gold)).replace("{items}",
-                                                                                               item_text).replace(
+        return MESSAGE_WELCOME_SHOP_SELL.replace("{amount_of_gold}", str(game.player.gold)).replace("{items}",
+                                                                                                    item_text).replace(
             "{shop_name}", shop.name)
 
 
@@ -205,6 +225,7 @@ MESSAGE_DUNGEON_MONSTERS_BLOCKING = "Monsters are blocking your way."
 
 MESSAGE_DUNGEON_CHEST_EMPTY = "The chest is empty."
 MESSAGE_DUNGEON_CHEST_REWARD = "You collected {item_name} from the chest."
+MESSAGE_DUNGEON_WRONG_MONSTER = "Please input a positive integer between 1 and the number of monsters."
 
 
 def get_message_dungeon_menu(options):
@@ -230,11 +251,11 @@ def get_message_dungeon_desc(monsters):
     return MESSAGE_DUNGEON_DESC.replace("{description}", description)
 
 
-def get_message_dungeon_fight(monsters, player):
+def get_message_dungeon_fight(monsters):
     monster_text = ""
     for i in range(0, len(monsters)):
         monster_text += " {}) {:15} ({} HP)\n".format(i + 1, monsters[i].name.title(), monsters[i].health)
-    return MESSAGE_DUNGEON_FIGHT.replace("{monsters}", monster_text).replace("{health}", str(player.health))
+    return MESSAGE_DUNGEON_FIGHT.replace("{monsters}", monster_text).replace("{health}", str(game.player.health))
 
 
 def get_message_defending(monster, damage):

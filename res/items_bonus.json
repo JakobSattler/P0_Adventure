@@ -5,5 +5,29 @@
     "influenced_stat": null,
     "passive_effect": false,
     "__class__": "Item"
+  },
+  {
+    "name": "boots",
+    "price": 4,
+    "influenced_stat": "defense",
+    "amount": 3,
+    "passive_effect": true,
+    "__class__": "Item"
+  },
+  {
+    "name": "water",
+    "price": 1,
+    "influenced_stat": "health",
+    "amount": 1,
+    "passive_effect": false,
+    "__class__": "Item"
+  },
+  {
+    "name": "axe",
+    "price": 15,
+    "influenced_stat": "attack",
+    "amount": 13,
+    "passive_effect": true,
+    "__class__": "Item"
   }
 ]

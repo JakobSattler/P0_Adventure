@@ -11,25 +11,9 @@ from item import Item
 from player import Player
 import text
 
-keymap = {
-    "ACTION_VILLAGE_INVENTORY": "1",
-    "ACTION_VILLAGE_MERCHANT": "2",
-    "ACTION_VILLAGE_BLACKSMITH": "3",
-    "ACTION_VILLAGE_DRUID": "4",
-    "ACTION_VILLAGE_DUNGEON": "5",
-    "ACTION_VILLAGE_SAVE": "6",
-    "ACTION_VILLAGE_QUIT": "0"
-}
-
-ACTION_INVENTORY_QUIT = "quit"
-
-ACTION_ITEM_USE = "use"
-ACTION_ITEM_DROP = "drop"
-
 player = Player()
 
 items = []
-
 monsters = []
 
 savefile = None
@@ -49,7 +33,6 @@ def start(args):
     if args.bonus_tasks:
         global bonus_tasks
         bonus_tasks = True
-        # TODO: implement bonus tasks
 
     if args.new_game:
         create_char()
@@ -150,13 +133,12 @@ def invalid_village_choice():
 
 def quit_game():
     if get_confirm("Save before exiting? (Y/N)", False):
-        save_game()
+        save_game(True)
         quit()
     else:
         quit()
 
 
-# TODO: replace item list with dict for easier access
 def find_item_by_name(item_name, item_list=items):
     try:
         return [item for item in item_list if item.name == item_name][0]
@@ -164,7 +146,6 @@ def find_item_by_name(item_name, item_list=items):
         return None
 
 
-# TODO: replace monster list with dict for easier access
 def find_monster_by_name(name):
     try:
         return [monster for monster in monsters if monster.name == name][0]
@@ -176,12 +157,13 @@ def print_bonus_tasks():
     print(",".join(str(x) for x in impl_bonus_tasks))
 
 
-def save_game():
+def save_game(exit=False):
     gamedata = GameData(
         **{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": bonus_tasks, "savefile": savefile})
     json_serialization.save_file(gamedata, savefile)
     print("Game saved to " + savefile)
-    village.show()
+    if not exit:
+        village.show()
 
 
 def load_game():

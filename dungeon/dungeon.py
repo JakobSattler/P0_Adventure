@@ -3,6 +3,7 @@ import text
 import inventory
 import village
 from random import randint
+from functools import partial
 
 import copy
 
@@ -11,13 +12,13 @@ from dungeon.room import Room
 random = False
 monsters = []
 
-options = ["Inventory", "Look Around", "Attack", "Open chest", "Move", "Run away (leave dungeon)"]
-
 default_rooms = []
 
 cur_room = None
 
 portal_used = False
+
+actions = None
 
 
 def init(p_random=False):
@@ -33,38 +34,54 @@ def init(p_random=False):
         print("Error - random dungeon not implemented yet")
         game.enter_village()
 
+    if not actions:
+        init_actions()
+
+    print_description()
+    show()
+
+
+def init_actions():
+    global actions
+    actions = {
+        text.DUNGEON_OPTIONS.index(text.OPTION_INVENTORY) + 1: partial(inventory.show, __name__),
+        text.DUNGEON_OPTIONS.index(text.OPTION_LOOK_AROUND) + 1: look_around,
+        text.DUNGEON_OPTIONS.index(text.OPTION_ATTACK) + 1: attack,
+        text.DUNGEON_OPTIONS.index(text.OPTION_OPEN_CHEST) + 1: open_chest,
+        text.DUNGEON_OPTIONS.index(text.OPTION_MOVE) + 1: move,
+        0: partial(leave_dungeon, False)
+    }
+
+
+def look_around():
     print_description()
     show()
 
 
 def open_portal():
-    options.insert(options.index("Run away (leave dungeon)"), "Use portal to village")
+    global actions
+
+    if not actions:
+        init_actions()
+
+    text.DUNGEON_OPTIONS.insert(text.DUNGEON_OPTIONS.index(text.OPTION_RUN), text.OPTION_PORT_TO_VILLAGE)
+    actions.update({
+        text.DUNGEON_OPTIONS.index(text.OPTION_PORT_TO_VILLAGE) + 1: partial(leave_dungeon, True)
+    })
 
 
 def close_portal():
-    options.remove("Use portal to village")
+    global actions
+    del actions[text.DUNGEON_OPTIONS.index(text.OPTION_PORT_TO_VILLAGE) + 1]
+    text.DUNGEON_OPTIONS.remove(text.OPTION_PORT_TO_VILLAGE)
 
 
 def show():
-    action = int(input(text.get_message_dungeon_menu(options)))
-    if action == options.index("Inventory") + 1:
-        inventory.show(__name__)
-    elif action == options.index("Look Around") + 1:
-        print_description()
-        show()
-    elif action == options.index("Attack") + 1:
-        attack()
-    elif action == options.index("Open chest") + 1:
-        open_chest()
-    elif action == options.index("Move") + 1:
-        move()
-    elif action == 0:
-        leave_dungeon(False)
-    elif game.bonus_tasks:
-        if action == options.index("Use portal to village") + 1:
-            leave_dungeon(True)
-    else:
-        print("invalid choice (change to proper error message)")
+    try:
+        action = int(input(text.get_message_dungeon_menu(text.DUNGEON_OPTIONS)))
+        actions[action]()
+    except (KeyError, ValueError):
+        print(text.MESSAGE_INVALID_CHOICE)
         show()
 
 
@@ -109,7 +126,6 @@ def set_default_rooms():
     default_rooms = [Room(**room_1), Room(**room_2)]
 
 
-# TODO: REFACTOR TO LESS CODE!!!!!
 def attack():
     if not cur_room.monsters:
         print(text.MESSAGE_DUNGEON_ROOM_EMPTY)
@@ -117,13 +133,15 @@ def attack():
 
     while cur_room.monsters:
         while True:
-            target = int(input(text.get_message_dungeon_fight(
-                cur_room.monsters, game.player)))
-            if not 1 <= target <= len(cur_room.monsters):
-                print(
-                    "Please input a positive integer between 1 and the number of monsters")
-            else:
-                break
+            try:
+                target = int(input(text.get_message_dungeon_fight(
+                    cur_room.monsters)))
+                if not 1 <= target <= len(cur_room.monsters):
+                    print(text.MESSAGE_DUNGEON_WRONG_MONSTER)
+                else:
+                    break
+            except ValueError:
+                print(text.MESSAGE_DUNGEON_WRONG_MONSTER)
 
         target = cur_room.monsters[target - 1]
 
@@ -134,7 +152,6 @@ def attack():
         for attacker in attackers:
             if not isinstance(attacker, type(game.player)):
                 defender = game.player
-                # TODO: function to get damage
                 if attacker.health > 0:
                     print(text.get_message_defending(
                         attacker, str(deal_damage(attacker, defender))))
