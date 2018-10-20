@@ -23,14 +23,7 @@ def main():
                         help='print bonus task list and exit')
     args = parser.parse_args()
 
-    # test()
-
     game.start(args)
-    # your code starts here
-
-
-def test():
-    dungeon.dungeon.init(True)
 
 
 if __name__ == "__main__":

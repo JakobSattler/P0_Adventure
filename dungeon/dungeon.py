@@ -1,5 +1,5 @@
 import game
-import text_messages
+import text
 import inventory
 import village
 from random import randint
@@ -46,7 +46,7 @@ def close_portal():
 
 
 def show():
-    action = int(input(text_messages.get_message_dungeon_menu(options)))
+    action = int(input(text.get_message_dungeon_menu(options)))
     if action == options.index("Inventory") + 1:
         inventory.show(__name__)
     elif action == options.index("Look Around") + 1:
@@ -79,7 +79,7 @@ def leave_dungeon(portal):
 def move():
     global cur_room
     if cur_room.monsters:
-        print(text_messages.MESSAGE_DUNGEON_MONSTERS_BLOCKING)
+        print(text.MESSAGE_DUNGEON_MONSTERS_BLOCKING)
         show()
     if not random:
         if cur_room == default_rooms[0]:
@@ -93,7 +93,7 @@ def move():
 
 
 def print_description():
-    print(text_messages.get_message_dungeon_desc(cur_room.monsters))
+    print(text.get_message_dungeon_desc(cur_room.monsters))
 
 
 def set_default_rooms():
@@ -112,12 +112,12 @@ def set_default_rooms():
 # TODO: REFACTOR TO LESS CODE!!!!!
 def attack():
     if not cur_room.monsters:
-        print(text_messages.MESSAGE_DUNGEON_ROOM_EMPTY)
+        print(text.MESSAGE_DUNGEON_ROOM_EMPTY)
         return show()
 
     while cur_room.monsters:
         while True:
-            target = int(input(text_messages.get_message_dungeon_fight(
+            target = int(input(text.get_message_dungeon_fight(
                 cur_room.monsters, game.player)))
             if not 1 <= target <= len(cur_room.monsters):
                 print(
@@ -136,24 +136,24 @@ def attack():
                 defender = game.player
                 # TODO: function to get damage
                 if attacker.health > 0:
-                    print(text_messages.get_message_defending(
+                    print(text.get_message_defending(
                         attacker, str(deal_damage(attacker, defender))))
                 if defender.health <= 0:
-                    print(text_messages.get_message_dungeon_player_died(attacker))
+                    print(text.get_message_dungeon_player_died(attacker))
                     reset_player()
                     return game.enter_village()
             else:
                 defender = target
-                print(text_messages.get_message_attacking(
+                print(text.get_message_attacking(
                     defender, str(deal_damage(attacker, defender))))
                 if defender.health <= 0:
                     reward = get_reward(defender)
                     game.player.gold += reward
                     cur_room.monsters.remove(defender)
-                    print(text_messages.get_message_dungeon_monster_died(
+                    print(text.get_message_dungeon_monster_died(
                         defender, str(reward)))
 
-    print(text_messages.MESSAGE_DUNGEON_ENEMIES_DEFEATED)
+    print(text.MESSAGE_DUNGEON_ENEMIES_DEFEATED)
     show()
 
 
@@ -174,14 +174,14 @@ def deal_damage(attacker, defender):
 
 def open_chest():
     if cur_room.monsters:
-        print(text_messages.MESSAGE_DUNGEON_MONSTERS_BLOCKING)
+        print(text.MESSAGE_DUNGEON_MONSTERS_BLOCKING)
         return show()
 
     if cur_room.rewards:
-        print(text_messages.MESSAGE_DUNGEON_CHEST_REWARD)
+        print(text.MESSAGE_DUNGEON_CHEST_REWARD)
         game.player.inventory = game.player.inventory + cur_room.rewards
     else:
-        print(text_messages.MESSAGE_DUNGEON_CHEST_EMPTY)
+        print(text.MESSAGE_DUNGEON_CHEST_EMPTY)
     show()
 
 

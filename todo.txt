@@ -13,3 +13,5 @@ dict for functions to call after choosing option --> array with options, set key
 edit description for magic scroll (currently "+0 none when used")
 
 create super class shop and use inheritance on shops
+
+grave digger message when no items in there

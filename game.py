@@ -9,7 +9,7 @@ from dungeon.monster import Monster
 from gamedata import GameData
 from item import Item
 from player import Player
-from text_messages import *
+import text
 
 keymap = {
     "ACTION_VILLAGE_INVENTORY": "1",
@@ -61,24 +61,24 @@ def start(args):
 
 
 def create_char():
-    char_name = input(MESSAGE_WELCOME_CREATE)
+    char_name = input(text.MESSAGE_WELCOME_CREATE)
 
     while True:
-        print(MESSAGE_ASSIGN_POINTS)
-        char_attack = read_stat(MESSAGE_ASSIGN_ATTACK)
-        char_defense = read_stat(MESSAGE_ASSIGN_DEFENSE)
-        char_speed = read_stat(MESSAGE_ASSIGN_SPEED)
+        print(text.MESSAGE_ASSIGN_POINTS)
+        char_attack = read_stat(text.MESSAGE_ASSIGN_ATTACK)
+        char_defense = read_stat(text.MESSAGE_ASSIGN_DEFENSE)
+        char_speed = read_stat(text.MESSAGE_ASSIGN_SPEED)
 
         if (char_attack + char_defense + char_speed) > 100:
-            print(MESSAGE_TOO_MANY_POINTS)
+            print(text.MESSAGE_TOO_MANY_POINTS)
         else:
             break
 
     print("Before you store your character please confirm your stats!")
-    confirm_text = MESSAGE_CONFIRM_STATS.replace("{char_name}", char_name).replace("{char_attack}",
-                                                                                   str(char_attack)) \
+    confirm_text = text.MESSAGE_CONFIRM_STATS.replace("{char_name}", char_name).replace("{char_attack}",
+                                                                                        str(char_attack)) \
         .replace("{char_defense}", str(char_defense)).replace("{char_speed}", str(char_speed))
-    if not confirm_stats(confirm_text):
+    if not get_confirm(confirm_text, True):
         create_char()
     else:
         # assign values to player-object
@@ -120,57 +120,59 @@ def enter_village():
     village.show()
 
 
-def confirm_stats(confirm_text):
-    confirm = input(confirm_text)
-    while confirm.lower() != "y" and confirm.lower() != "n":
-        print(MESSAGE_WRONG_CONFIRM_CHAR)
-        confirm = input()
-    if confirm.lower() == "n":
-        return False
-    else:
-        return True
-
-
 def read_stat(stat_text):
-    stat = int(input(stat_text))
-
-    if stat <= 0:
-        print(MESSAGE_NEGATIVE_ASSIGNED)
+    try:
+        stat = int(input(stat_text))
+        if stat <= 0:
+            print(text.MESSAGE_NEGATIVE_ASSIGNED)
+            return read_stat(stat_text)
+        return stat
+    except ValueError:
+        print("Error: Please input an integer")
         return read_stat(stat_text)
-    return stat
+
+
+def get_confirm(confirm_text, validate):
+    confirm = input(confirm_text).lower()
+    while confirm != "y" and confirm != "n" and validate:
+        print(text.MESSAGE_WRONG_CONFIRM_CHAR)
+        confirm = input().lower()
+
+    if confirm == "y":
+        return True
+    else:
+        return False
 
 
 def invalid_village_choice():
-    print(MESSAGE_INVALID_CHOICE)
+    print(text.MESSAGE_INVALID_CHOICE)
 
 
 def quit_game():
-    action = input("Save before exiting? (Y/N)")
-    if action.lower() == "n":
+    if get_confirm("Save before exiting? (Y/N)", False):
+        save_game()
         quit()
     else:
-        save_game()
         quit()
 
 
 # TODO: replace item list with dict for easier access
 def find_item_by_name(item_name, item_list=items):
-    for item in item_list:
-        if item.name == item_name:
-            return item
-    return None
+    try:
+        return [item for item in item_list if item.name == item_name][0]
+    except IndexError:
+        return None
 
 
 # TODO: replace monster list with dict for easier access
 def find_monster_by_name(name):
-    for monster in monsters:
-        if monster.name == name:
-            return monster
-    return None
+    try:
+        return [monster for monster in monsters if monster.name == name][0]
+    except IndexError:
+        return None
 
 
 def print_bonus_tasks():
-    # TODO: insert the tasks you implemented
     print(",".join(str(x) for x in impl_bonus_tasks))
 
 
@@ -178,6 +180,8 @@ def save_game():
     gamedata = GameData(
         **{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": bonus_tasks, "savefile": savefile})
     json_serialization.save_file(gamedata, savefile)
+    print("Game saved to " + savefile)
+    village.show()
 
 
 def load_game():

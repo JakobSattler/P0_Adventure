@@ -1,16 +1,16 @@
 {
   "savefile": "test5.json",
-  "bonus_tasks": false,
+  "__class__": "GameData",
   "player": {
+    "gold": 100,
     "health": 100,
-    "defense": 1,
-    "name": "Player1",
+    "inventory": [],
+    "attack": 1,
     "speed": 1,
     "__class__": "Player",
-    "attack": 1,
-    "inventory": [],
-    "gold": 100
+    "defense": 1,
+    "name": "Player1"
   },
-  "__class__": "GameData",
+  "bonus_tasks": false,
   "dungeon_room": null
 }
