@@ -1,138 +1,138 @@
 {
-  "__class__": "GameData",
   "dungeon_room": null,
+  "bonus_tasks": false,
+  "__class__": "GameData",
   "player": {
-    "attack": 1,
-    "defense": 1,
     "old_inventory": [
       {
+        "__class__": "Item",
+        "amount": 5,
         "influenced_stat": "attack",
         "name": "sword",
-        "price": 10,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 5
+        "price": 10
       },
       {
+        "__class__": "Item",
+        "amount": 5,
         "influenced_stat": "attack",
         "name": "sword",
-        "price": 10,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 5
+        "price": 10
       },
       {
+        "__class__": "Item",
+        "amount": 5,
         "influenced_stat": "attack",
         "name": "sword",
-        "price": 10,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 5
+        "price": 10
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 5,
         "influenced_stat": "attack",
         "name": "sword",
-        "price": 10,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 5
+        "price": 10
       },
       {
+        "__class__": "Item",
+        "amount": 5,
         "influenced_stat": "attack",
         "name": "sword",
-        "price": 10,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 5
+        "price": 10
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       },
       {
+        "__class__": "Item",
+        "amount": 4,
         "influenced_stat": "defense",
         "name": "chest plate",
-        "price": 5,
-        "__class__": "Item",
         "passive_effect": true,
-        "amount": 4
+        "price": 5
       }
     ],
-    "name": "Player1",
-    "gold": 11,
-    "speed": 1,
+    "attack": 1,
     "__class__": "Player",
+    "defense": 1,
+    "gold": 6,
+    "name": "Player1",
     "inventory": [],
-    "health": 100
+    "health": 100,
+    "speed": 1
   },
-  "savefile": "test6.json",
-  "bonus_tasks": false
+  "savefile": "test6.json"
 }

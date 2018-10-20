@@ -9,7 +9,6 @@ from dungeon.monster import Monster
 from gamedata import GameData
 from item import Item
 from player import Player
-from shops import blacksmith, druid
 from text_messages import *
 
 keymap = {

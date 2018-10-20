@@ -204,12 +204,12 @@ def get_message_welcome_druid(shop_inventory, player):
 def get_message_shop_welcome(shop, player):
     item_text = ""
     for item in shop.inventory:
-        price = item.price if not shop.selling else int(item.price * 0.5)
+        price = item.price if not shop.buyer else int(item.price * 0.5)
         item_desc = "({:+d} {} when {})".format(item.amount, item.influenced_stat,
-                                                "held" if item.passive_effect else "used") if not shop.selling else ""
+                                                "held" if item.passive_effect else "used") if not shop.buyer else ""
         item_text += "  * {:20} for {:4d} gold {}\n".format(item.name.capitalize(),
                                                             price, item_desc)
-    if not shop.selling:
+    if not shop.buyer:
         return MESSAGE_WELCOME_SHOP_BUY.replace("{amount_of_gold}", str(player.gold)).replace("{items}",
                                                                                               item_text).replace(
             "{shop_name}", shop.name)

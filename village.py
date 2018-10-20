@@ -3,9 +3,7 @@ import inventory
 import text_messages
 import treasure_chest
 from dungeon import dungeon
-from shops.blacksmith import Blacksmith
-from shops.druid import Druid
-from shops.merchant import Merchant
+from shop import Shop
 
 options = ["inventory", "merchant", "blacksmith", "druid", "dungeon", "save game", "quit game"]
 
@@ -30,13 +28,13 @@ def init():
         options.insert(options.index("save game"), "grave digger")
 
     global druid
-    druid = Druid([item for item in game.items if not item.passive_effect])
+    druid = Shop("druid", [item for item in game.items if not item.passive_effect], False)
 
     global blacksmith
-    blacksmith = Blacksmith([item for item in game.items if item.passive_effect])
+    blacksmith = Shop("blacksmith", [item for item in game.items if item.passive_effect], False)
 
     global merchant
-    merchant = Merchant()
+    merchant = Shop("merchant", game.player.inventory, True)
 
 
 def show():
