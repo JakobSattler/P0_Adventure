@@ -23,5 +23,6 @@ class Player:
         print()
 
     def update_stat(self, influenced_stat, amount):
-        stat = getattr(self, influenced_stat)
-        setattr(self, influenced_stat, stat + amount)
+        if influenced_stat:
+            stat = getattr(self, influenced_stat)
+            setattr(self, influenced_stat, stat + amount)

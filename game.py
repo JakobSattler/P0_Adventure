@@ -92,21 +92,19 @@ def create_char():
 # looked up how to get relative path in python
 # https://stackoverflow.com/questions/918154/relative-paths-in-python
 def init():
-    init_items()
+    init_items("res/items.json")
+    if bonus_tasks:
+        init_items("res/items_bonus.json")
     init_monsters()
     village.init()
 
 
-def init_items():
-    filename = os.path.join(os.path.dirname(__file__), "res/items.json")
+def init_items(path):
+    filename = os.path.join(os.path.dirname(__file__), path)
 
     for item in json_serialization.load_file(filename):
         item.name = item.name.lower()
         items.append(item)
-        if item.passive_effect:
-            blacksmith.inventory.append(item)
-        else:
-            druid.inventory.append(item)
 
 
 def init_monsters():
@@ -179,7 +177,7 @@ def print_bonus_tasks():
 
 def save_game():
     gamedata = GameData(
-        **{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": False, "savefile": savefile})
+        **{"player": player, "dungeon_room": dungeon.cur_room, "bonus_tasks": bonus_tasks, "savefile": savefile})
     json_serialization.save_file(gamedata, savefile)
 
 

@@ -1,4 +1,3 @@
-from dungeon.room import Room
 import game
 import text_messages
 import inventory
@@ -6,18 +5,18 @@ from random import randint
 
 import copy
 
+from dungeon.room import Room
+
 random = False
 monsters = []
 
+options = ["Inventory", "Look Around", "Attack", "Open chest", "Move", "Run away (leave dungeon)"]
+
 default_rooms = []
+
 cur_room = None
 
-ACTION_INVENTORY = "1"
-ACTION_LOOK_AROUND = "2"
-ACTION_ATTACK = "3"
-ACTION_OPEN_CHEST = "4"
-ACTION_MOVE = "5"
-ACTION_RUN_AWAY = "0"
+portal_used = False
 
 
 def init(p_random=False):
@@ -27,33 +26,53 @@ def init(p_random=False):
     if not random:
         set_default_rooms()
         global cur_room
-        if not cur_room:
-            cur_room = default_rooms[0]
+        cur_room = default_rooms[0]
     else:
         # do stuff
-        print("randon dungeon not implemented yet")
+        print("Error - random dungeon not implemented yet")
+        game.enter_village()
 
     print_description()
     show()
 
 
+def open_portal():
+    options.insert(options.index("Run away (leave dungeon)"), "Use portal to village")
+
+
+def close_portal():
+    options.remove("Use portal to village")
+
+
 def show():
-    action = input(text_messages.MESSAGE_DUNGEON_MENU)
-    if action == ACTION_INVENTORY:
+    action = int(input(text_messages.get_message_dungeon_menu(options)))
+    if action == options.index("Inventory") + 1:
         inventory.show(__name__)
-    elif action == ACTION_LOOK_AROUND:
+    elif action == options.index("Look Around") + 1:
         print_description()
         show()
-    elif action == ACTION_ATTACK:
+    elif action == options.index("Attack") + 1:
         attack()
-    elif action == ACTION_OPEN_CHEST:
+    elif action == options.index("Open chest") + 1:
         open_chest()
-    elif action == ACTION_MOVE:
+    elif action == options.index("Move") + 1:
         move()
-    elif action == ACTION_RUN_AWAY:
-        global cur_room
-        cur_room = None
-        game.enter_village()
+    elif action == 0:
+        leave_dungeon(False)
+    elif game.bonus_tasks:
+        if action == options.index("Use portal to village") + 1:
+            leave_dungeon(True)
+    else:
+        print("invalid choice (change to proper error message)")
+        show()
+
+
+def leave_dungeon(portal):
+    global portal_used
+    portal_used = portal
+    if portal_used:
+        close_portal()
+    game.enter_village()
 
 
 def move():

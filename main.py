@@ -28,8 +28,10 @@ def main():
     game.start(args)
     # your code starts here
 
+
 def test():
     dungeon.dungeon.init(True)
+
 
 if __name__ == "__main__":
     main()

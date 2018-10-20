@@ -1,18 +1,15 @@
 REMOVE todo.txt?
 
-GIT!!!!
 
-Redesign: interface "gamestate"(?) with show function for easier return when exiting menu (e.g. inventory)
+Check todos in code!
+Error messages (Assignment)!
+add more monsters and items!
+implement random dungeon if bonus tasks running?
 
-Check todos in code
-Error messages (Assignment)
-add more monsters and items
-implement random dungeon if bonus tasks running
-
-When resetting player --> reset to base stats
-
-on inventory change --> update stats of player (passive effects) 
-	-->	not working when removing, as every object in inventory is the same, so more than one item gets removed. Better use indices or copies of objects.
-		But can't really use indices, as user just inputs name of object. better just find the first appearance of the item?
 refactor!!!! --> especially text_messages (how to store text most effectively?, item list)
 
+dict for functions to call after choosing option --> array with options, set key of array to index of option+1, value to function to call!
+
+edit description for magic scroll (currently "+0 none when used")
+
+create super class shop and use inheritance on shops

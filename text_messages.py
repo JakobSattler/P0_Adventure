@@ -75,7 +75,8 @@ def get_message_welcome_village(options):
 
 
 def get_message_treasure_chest(chest, player):
-    return MESSAGE_WELCOME_TREASURE_CHEST.replace("{char_name}", player.name).replace("{items}", get_inventory_list(chest))
+    return MESSAGE_WELCOME_TREASURE_CHEST.replace("{char_name}", player.name).replace("{items}",
+                                                                                      get_inventory_list(chest))
 
 
 def get_message_inventory_welcome(items, player):
@@ -93,11 +94,13 @@ def get_inventory_list(items):
 
 def get_message_item_used(item, player):
     # TODO: Exception for stat not existing
-    new_stat = str(getattr(player, str(item.influenced_stat).lower()))
-    return MESSAGE_ITEM_USED.replace("{item_name}", item.name.capitalize()) \
-        .replace("{influenced_attribute}", item.influenced_stat) \
-        .replace("{new_stat_amount}", new_stat) \
-        .replace("{amount}", str(item.amount))
+    if item.influenced_stat:
+        new_stat = str(getattr(player, str(item.influenced_stat).lower()))
+        return MESSAGE_ITEM_USED.replace("{item_name}", item.name.capitalize()) \
+            .replace("{influenced_attribute}", item.influenced_stat) \
+            .replace("{new_stat_amount}", new_stat) \
+            .replace("{amount}", str(item.amount))
+    return MESSAGE_ITEM_USED.replace("{item_name}", item.name.capitalize())
 
 
 def get_message_use_or_drop(item):
@@ -176,6 +179,18 @@ MESSAGE_WELCOME_DRUID = "Welcome to the druid\n" \
                         "Type 'quit' or the name of the item you want to buy.\n" \
                         "> "
 
+MESSAGE_WELCOME_SHOP_BUY = "Welcome to the {shop_name}\n" \
+                           "You have {amount_of_gold} gold to spend. This is what I'm selling:\n\n" \
+                           "{items}\n" \
+                           "Type 'quit' or the name of the item you want to buy.\n" \
+                           "> "
+
+MESSAGE_WELCOME_SHOP_SELL = "Welcome to the {shop_name}!\n" \
+                            "You have {amount_of_gold} gold. This is what I would pay for your items:\n\n" \
+                            "{items}\n" \
+                            "Type 'quit' or the name of the item you want to sell.\n" \
+                            "> "
+
 
 def get_message_welcome_druid(shop_inventory, player):
     item_text = ""
@@ -186,15 +201,28 @@ def get_message_welcome_druid(shop_inventory, player):
     return MESSAGE_WELCOME_DRUID.replace("{amount_of_gold}", str(player.gold)).replace("{items}", item_text)
 
 
+def get_message_shop_welcome(shop, player):
+    item_text = ""
+    for item in shop.inventory:
+        price = item.price if not shop.selling else int(item.price * 0.5)
+        item_desc = "({:+d} {} when {})".format(item.amount, item.influenced_stat,
+                                                "held" if item.passive_effect else "used") if not shop.selling else ""
+        item_text += "  * {:20} for {:4d} gold {}\n".format(item.name.capitalize(),
+                                                            price, item_desc)
+    if not shop.selling:
+        return MESSAGE_WELCOME_SHOP_BUY.replace("{amount_of_gold}", str(player.gold)).replace("{items}",
+                                                                                              item_text).replace(
+            "{shop_name}", shop.name)
+    else:
+        return MESSAGE_WELCOME_SHOP_SELL.replace("{amount_of_gold}", str(player.gold)).replace("{items}",
+                                                                                               item_text).replace(
+            "{shop_name}", shop.name)
+
+
 # dungeon
 MESSAGE_DUNGEON_DESC = "You see {description}."
 MESSAGE_DUNGEON_MENU = "What do you want to do?\n\n" \
-                       "  1) Inventory\n" \
-                       "  2) Look Around\n" \
-                       "  3) Attack\n" \
-                       "  4) Open chest\n" \
-                       "  5) Move\n" \
-                       "  0) Run away (leave dungeon)\n\n" \
+                       "{options}" \
                        "> "
 MESSAGE_DUNGEON_ROOM_EMPTY = "You are alone in this room."
 MESSAGE_DUNGEON_FIGHT = "You see the following enemies:\n\n" \
@@ -211,6 +239,15 @@ MESSAGE_DUNGEON_MONSTERS_BLOCKING = "Monsters are blocking your way."
 
 MESSAGE_DUNGEON_CHEST_EMPTY = "The chest is empty."
 MESSAGE_DUNGEON_CHEST_REWARD = "You collected {item_name} from the chest."
+
+
+def get_message_dungeon_menu(options):
+    options_text = ""
+    for option in options:
+        key = options.index(option) + 1 if not option == options[len(options) - 1] else 0
+        options_text += "  {}) {}\n".format(key, option)
+    options_text += "\n"
+    return MESSAGE_DUNGEON_MENU.replace("{options}", options_text)
 
 
 def get_message_dungeon_desc(monsters):
@@ -252,17 +289,3 @@ def get_message_dungeon_monster_died(monster, reward):
 
 def get_message_dungeon_chest_reward(item_name):
     return MESSAGE_DUNGEON_CHEST_REWARD.replace("{item_name}", item_name)
-
-
-# item list styles
-ITEM_LIST_INVENTORY = "inventory"
-ITEM_LIST_MERCHANT = "merchant"
-ITEM_LIST_BLACKSMITH = "blacksmith"
-ITEM_LIST_DRUID = "druid"
-
-ITEM_LIST_STYLES = {
-    ITEM_LIST_INVENTORY: MESSAGE_WELCOME_INVENTORY,
-    ITEM_LIST_MERCHANT: MESSAGE_WELCOME_MERCHANT,
-    # ITEM_LIST_BLACKSMITH: MESSAGE_WELCOME_BLACKSMITH
-    # ITEM_LIST_DRUID: MESSAGE_WELCOME_DRUID
-}
