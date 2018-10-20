@@ -1,6 +1,7 @@
 import game
 import text_messages
 import inventory
+import village
 from random import randint
 
 import copy
@@ -157,7 +158,7 @@ def attack():
 
 
 def reset_player():
-    game.player.old_inventory = copy.deepcopy(game.player.inventory)
+    village.grave_digger.inventory = copy.deepcopy(game.player.inventory)
     inventory.clear_inventory()
     game.player.health = 100
     global cur_room

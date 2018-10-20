@@ -1,42 +1,49 @@
 {
-  "dungeon_room": {
-    "rewards": null,
-    "monsters": [
+  "savefile": "game.json",
+  "__class__": "GameData",
+  "dungeon_room": null,
+  "player": {
+    "inventory": [
       {
-        "name": "rat",
-        "defense": 15,
-        "health": 30,
-        "__class__": "Monster",
-        "reward_max": 5,
-        "speed": 50,
-        "reward_min": 1,
-        "attack": 10
+        "__class__": "Item",
+        "passive_effect": false,
+        "price": 3,
+        "amount": 10,
+        "influenced_stat": "health",
+        "name": "potion"
       },
       {
-        "name": "gnoll",
-        "defense": 40,
-        "health": 60,
-        "__class__": "Monster",
-        "reward_max": 10,
-        "speed": 20,
-        "reward_min": 5,
-        "attack": 30
+        "__class__": "Item",
+        "passive_effect": false,
+        "price": 3,
+        "amount": 10,
+        "influenced_stat": "health",
+        "name": "potion"
+      },
+      {
+        "__class__": "Item",
+        "passive_effect": false,
+        "price": 3,
+        "amount": 10,
+        "influenced_stat": "health",
+        "name": "potion"
+      },
+      {
+        "__class__": "Item",
+        "passive_effect": false,
+        "price": 3,
+        "amount": 10,
+        "influenced_stat": "health",
+        "name": "potion"
       }
     ],
-    "__class__": "Room"
-  },
-  "savefile": "game.json",
-  "bonus_tasks": false,
-  "__class__": "GameData",
-  "player": {
-    "name": "1",
+    "attack": 1,
+    "gold": 76,
     "defense": 1,
     "health": 100,
-    "inventory": [],
     "__class__": "Player",
-    "old_inventory": [],
     "speed": 1,
-    "gold": 100,
-    "attack": 1
-  }
+    "name": "1"
+  },
+  "bonus_tasks": true
 }

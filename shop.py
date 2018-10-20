@@ -30,6 +30,8 @@ class Shop:
         else:
             game.player.gold -= item.price
             inventory.add_item(item)
+            if self.name == "grave digger":
+                self.inventory.remove(item)
             print(text_messages.get_message_item_bought(item, game.player))
 
     def show(self):

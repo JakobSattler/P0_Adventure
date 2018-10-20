@@ -10,6 +10,7 @@ options = ["inventory", "merchant", "blacksmith", "druid", "dungeon", "save game
 druid = None
 blacksmith = None
 merchant = None
+grave_digger = None
 
 keymap = {
     "ACTION_VILLAGE_INVENTORY": "1",
@@ -26,6 +27,9 @@ def init():
     if game.bonus_tasks:
         options.insert(options.index("save game"), "treasure chest")
         options.insert(options.index("save game"), "grave digger")
+
+    global grave_digger
+    grave_digger = Shop("grave digger", [], False)
 
     global druid
     druid = Shop("druid", [item for item in game.items if not item.passive_effect], False)
@@ -68,13 +72,9 @@ def execute_village_action(action):
         if action == str(options.index("treasure chest") + 1):
             treasure_chest.show()
         elif action == str(options.index("grave digger") + 1):
-            grave_digger()
+            grave_digger.show()
         elif action == str(options.index("use portal to dungeon") + 1):
             dungeon.show()
     else:
         print(text_messages.MESSAGE_INVALID_CHOICE)
         show()
-
-
-def grave_digger():
-    print("Here you can buy the items you lost when dying for 50% of the normal price")
