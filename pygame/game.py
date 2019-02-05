@@ -1,3 +1,4 @@
+import sys
 import pygame
 from pygame.locals import *
 from player import Player
@@ -9,6 +10,8 @@ background = None
 player = Player()
 
 running = True
+
+objectSpeed = 5
 
 def start():
     init()
@@ -50,10 +53,39 @@ def runLoop():
     global running
     while running:
         for event in pygame.event.get():
-            if event.type == QUIT:
-                running = False
+            checkInput(event)
 
-        pygame.draw.rect(background, (0, 255, 0), player.rect)
+        player.update()
+        background.blit(player.rect, player.rect)
 
         screen.blit(background, (0, 0))
         pygame.display.flip()
+
+def checkInput(event):
+    # close game
+    if event.type == QUIT:
+        pygame.quit()
+        sys.exit()
+        global running
+        running = False
+
+    # player movement
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT or event.key == ord("a"):
+            player.moveLeft()
+        if event.key == pygame.K_RIGHT or event.key == ord("d"):
+            player.moveRight()
+        if event.key == pygame.K_UP or event.key == ord("w"):
+            player.moveUp()
+        if event.key == pygame.K_DOWN or event.key == ord("s"):
+            player.moveDown()
+
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_LEFT or event.key == ord("a"):
+            player.stopLeft()
+        if event.key == pygame.K_RIGHT or event.key == ord("d"):
+            player.stopRight()
+        if event.key == pygame.K_UP or event.key == ord("w"):
+            player.stopUp()
+        if event.key == pygame.K_DOWN or event.key == ord("s"):
+            player.stopDown()
